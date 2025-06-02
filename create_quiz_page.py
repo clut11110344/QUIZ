@@ -6,15 +6,14 @@ def create_html_quiz_page(quiz_data): #
     """
     Generates a single HTML page string for an interactive quiz based on the provided quiz_data.
     """ #
-    # Validate quiz data structure (basic check for the new structure)
     if not isinstance(quiz_data, dict): #
         raise ValueError("Quiz data must be a dictionary (keyed by exam number string)") #
     
-    if not quiz_data: # Check if the dictionary is empty
+    if not quiz_data: 
         raise ValueError("Quiz data dictionary is empty")
 
     try: #
-        quiz_data_embedded_json = json.dumps(quiz_data, ensure_ascii=False, indent=None) # Minify for embedding
+        quiz_data_embedded_json = json.dumps(quiz_data, ensure_ascii=False, indent=None) 
     except (TypeError, ValueError) as e: #
         raise ValueError(f"Cannot serialize quiz data to JSON: {e}") #
 
@@ -23,7 +22,7 @@ def create_html_quiz_page(quiz_data): #
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>金融科技力知識檢定測驗 (完整版)</title>
+    <title>金融科技力知識檢定測驗 (完整版 - 隨機出題)</title>
     <style>
         body {{
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -198,7 +197,7 @@ def create_html_quiz_page(quiz_data): #
         .error {{
             color: #d9534f;
             background-color: #f9f2f4;
-            border: 1px solid #d1ecf1; /* Corrected to a more appropriate border color for error */
+            border: 1px solid #d1ecf1; 
             padding: 10px;
             border-radius: 4px;
             margin: 10px 0;
@@ -207,7 +206,7 @@ def create_html_quiz_page(quiz_data): #
 </head>
 <body>
     <div id="quiz-container">
-        <h1>金融科技力知識檢定測驗 (完整版)</h1>
+        <h1>金融科技力知識檢定測驗 (完整版 - 隨機出題)</h1>
         
         <div id="exam-selection">
             <h2>請選擇測驗：</h2>
@@ -236,14 +235,13 @@ def create_html_quiz_page(quiz_data): #
     </div>
 
     <script>
-        const rawQuizData = {quiz_data_embedded_json}; // Python embeds the JSON string here
+        const rawQuizData = {quiz_data_embedded_json};
         let processedQuizData = {{ exams: [] }}; 
 
-        // --- Data Transformation ---
-        // ** CRITICAL FIX: Use 'rawQuizData' instead of 'rawQuizDataFromInput' **
+        // --- Data Transformation (same as before, includes point assignment) ---
         if (rawQuizData && typeof rawQuizData === 'object') {{
             processedQuizData.exams = Object.keys(rawQuizData).map(examKey => {{
-                const originalExam = rawQuizData[examKey]; // Use rawQuizData
+                const originalExam = rawQuizData[examKey]; 
                 const examNumber = originalExam.exam_number || parseInt(examKey);
                 
                 if (!originalExam.questions || !Array.isArray(originalExam.questions)) {{
@@ -257,8 +255,8 @@ def create_html_quiz_page(quiz_data): #
                     scoring_info: "第1-40題每題1.5分，第41-60題每題2分",
                     questions: originalExam.questions.map(q => {{
                         const questionNumber = q.question_number;
-                        let points = 1.5; // Default points for questions 1-40
-                        if (questionNumber >= 41 && questionNumber <= 60) {{ // Questions 41-60
+                        let points = 1.5; 
+                        if (questionNumber >= 41 && questionNumber <= 60) {{ 
                             points = 2.0;
                         }}
                         
@@ -281,7 +279,7 @@ def create_html_quiz_page(quiz_data): #
                                 text: q.options[optKey]
                             }})),
                             answer: parseInt(q.answer), 
-                            points: points // Correct points assigned here
+                            points: points 
                         }};
                     }}).filter(q => q && q.options && q.options.length > 0), 
                     answer_sheet_source_id: `Exam ${{examKey}} data`
@@ -309,11 +307,11 @@ def create_html_quiz_page(quiz_data): #
         const scoreTextEl = document.getElementById('score-text');
         const reviewAreaEl = document.getElementById('review-area');
         const restartQuizBtn = document.getElementById('restart-quiz-btn');
-
+        
         function showError(message) {{ 
             console.error(message); 
             const errorDivOld = document.querySelector('.error');
-            if(errorDivOld) errorDivOld.remove(); // Remove old error message if any
+            if(errorDivOld) errorDivOld.remove(); 
             const errorDiv = document.createElement('div'); 
             errorDiv.className = 'error'; 
             errorDiv.textContent = message; 
@@ -352,32 +350,22 @@ def create_html_quiz_page(quiz_data): #
                 if (!exam.title || typeof exam.title !== 'string') {{ 
                     throw new Error(`測驗索引 ${{examIndex}} 缺少有效的標題`); 
                 }}
-                
-                if (!exam.questions || !Array.isArray(exam.questions)) {{ 
-                    throw new Error(`測驗 "${{exam.title}}" 缺少有效的題目列表`); 
+                if (!exam.questions || !Array.isArray(exam.questions) || exam.questions.length === 0) {{ 
+                     throw new Error(`測驗 "${{exam.title}}" 沒有題目或題目列表無效`);
                 }}
-                
-                if (exam.questions.length === 0) {{ 
-                    throw new Error(`測驗 "${{exam.title}}" 沒有題目`); 
-                }}
-                
                 exam.questions.forEach((question, questionIndex) => {{ 
                     if (typeof question.id === 'undefined' || typeof question.text !== 'string') {{ 
                         throw new Error(`測驗 "${{exam.title}}" 第 ${{questionIndex + 1}} 題缺少必要資訊 (ID or text)`); 
                     }}
-                    
                     if (!question.options || !Array.isArray(question.options) || question.options.length === 0) {{ 
                         throw new Error(`測驗 "${{exam.title}}" 第 ${{questionIndex + 1}} 題缺少選項`); 
                     }}
-                    
                     if (typeof question.points !== 'number' || question.points <= 0) {{ 
                         throw new Error(`測驗 "${{exam.title}}" 第 ${{questionIndex + 1}} 題分數無效 (得到: ${{question.points}})`); 
                     }}
-                    
                     if (typeof question.answer !== 'number') {{ 
                         throw new Error(`測驗 "${{exam.title}}" 第 ${{questionIndex + 1}} 題缺少正確答案(或非數字格式)`); 
                     }}
-                    
                     const answerExists = question.options.some(opt => opt.option_id === question.answer); 
                     if (!answerExists) {{ 
                         throw new Error(`測驗 "${{exam.title}}" 第 ${{questionIndex + 1}} 題的正確答案 (${{question.answer}}) 不在選項中`); 
@@ -386,21 +374,25 @@ def create_html_quiz_page(quiz_data): #
             }});
         }}
 
+        // Fisher-Yates (Knuth) Shuffle function
+        function shuffleArray(array) {{
+            for (let i = array.length - 1; i > 0; i--) {{
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+            }}
+        }}
 
         function populateExamSelector() {{ 
             try {{ 
                 hideError(); 
                 validateProcessedQuizData(); 
-                
                 examSelector.innerHTML = '<option value="">-- 選擇一個測驗 --</option>'; 
-                
                 processedQuizData.exams.forEach((exam, index) => {{ 
                     const optionElement = document.createElement('option'); 
                     optionElement.value = index; 
                     optionElement.textContent = `${{exam.title}} (${{exam.questions.length}} 題)`; 
                     examSelector.appendChild(optionElement); 
                 }});
-                
                 startQuizBtn.disabled = false; 
             }} catch (error) {{ 
                 showError(`載入測驗資料時發生錯誤：${{error.message}}`); 
@@ -417,7 +409,16 @@ def create_html_quiz_page(quiz_data): #
                 }}
 
                 hideError(); 
-                currentExamData = processedQuizData.exams[parseInt(selectedExamIndex)]; 
+                // Create a deep copy of the selected exam's data to shuffle
+                // This prevents modifying the original processedQuizData structure if the user re-selects the same exam
+                let selectedExamObject = JSON.parse(JSON.stringify(processedQuizData.exams[parseInt(selectedExamIndex)]));
+                
+                // Shuffle the questions array of the copied exam data
+                if (selectedExamObject.questions && selectedExamObject.questions.length > 0) {{
+                    shuffleArray(selectedExamObject.questions);
+                }}
+                currentExamData = selectedExamObject; // Use the exam with shuffled questions
+
                 currentQuestionIndex = 0; 
                 userAnswers = new Array(currentExamData.questions.length).fill(null); 
                 totalScore = 0; 
