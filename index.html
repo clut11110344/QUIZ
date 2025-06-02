@@ -26,7 +26,7 @@
             width: 100%;
             max-width: 800px;
             transition: background-color 0.3s, box-shadow 0.3s;
-            position: relative; /* Added for positioning timer toggle */
+            position: relative; 
         }
 
         h1, h2, h3, h4 {
@@ -45,7 +45,7 @@
             margin-bottom: 10px;
         }
         
-        h4 {
+        h4 { /* General h4 style */
             font-size: 1.1em;
             margin-bottom: 8px;
         }
@@ -80,7 +80,7 @@
             cursor: pointer;
             font-size: 1.1em;
             transition: background-color 0.3s ease;
-            margin-top: 10px; /* Default margin, can be overridden */
+            margin-top: 10px; 
         }
 
         button:hover {
@@ -195,7 +195,7 @@
         .error {
             color: #d9534f;
             background-color: #f9f2f4;
-            border: 1px solid #d1ecf1; /* Should be error color like #f5c6cb */
+            border: 1px solid #f5c6cb; 
             padding: 10px;
             border-radius: 4px;
             margin: 10px 0;
@@ -207,30 +207,55 @@
             font-weight: bold; 
             text-align: center; 
             margin: 10px 0; 
-            color: #d9534f; /* Default red color for timer */
+            color: #d9534f; 
             transition: color 0.3s;
         }
 
         /* Styles for Question Overview Panel */
-        #question-overview-container h4 {
-            margin-bottom: 8px;
-            font-size: 1em;
-            color: #444; 
+        #overview-header { 
+            cursor: pointer;
+            user-select: none;
+            padding-bottom: 5px;
+            margin-bottom: 10px; 
+            border-bottom: 1px solid #eee; 
+            font-size: 1.1em; 
+            text-align: left; /* Override general h4 center alignment */
+        }
+        #overview-toggle-icon {
+            margin-right: 8px;
+            display: inline-block;
+            width: 1em; 
+            transition: transform 0.2s ease-in-out;
+        }
+
+        #overview-panel {
+            display: grid; 
+            grid-template-columns: repeat(10, 1fr); 
+            gap: 5px; 
+            margin-top: 10px;
         }
 
         .overview-item {
-            padding: 6px 10px;
+            width: 100%; 
+            aspect-ratio: 1 / 1; 
+            
+            display: flex; 
+            align-items: center;
+            justify-content: center;
+            
+            box-sizing: border-box;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 4px; 
             cursor: pointer;
-            font-size: 0.9em;
+            font-size: 0.85em; 
+            text-align: center;
             background-color: #f0f0f0;
             color: #333;
             transition: background-color 0.2s, border-color 0.2s, color 0.2s;
-            min-width: 30px; 
-            text-align: center;
-            margin-top: 0; /* Override general button margin */
+            padding: 2px; 
+            margin-top: 0; 
         }
+
 
         .overview-item:hover {
             background-color: #e0e0e0;
@@ -257,25 +282,26 @@
 
         .overview-item.marked {
             border: 2px solid #ffc107; 
+            padding: 1px; /* Adjust padding for thicker border */
             box-shadow: 0 0 5px rgba(255, 193, 7, 0.5);
         }
         .overview-item.marked.current {
-             border-width: 2px; 
+             /* border-width: 2px; No need, .marked already sets it */
         }
         .overview-item.marked.answered { 
             background-color: #fff3cd; 
-            border-color: #ffeeba;
             color: #856404;
+            border: 2px solid #ffc107; /* Ensure marked border takes precedence */
         }
          .overview-item.marked.answered.current { 
             background-color: #ffc107; 
             color: black;
-            border-color: #e0a800;
+            border: 2px solid #e0a800;
         }
 
         #mark-question-btn {
             background-color: #6c757d; 
-            margin-top: 0; /* Resetting margin from general button style if needed */
+            margin-top: 0; 
         }
         #mark-question-btn:hover {
             background-color: #5a6268;
@@ -304,9 +330,15 @@
         body.dark-mode h1,
         body.dark-mode h2,
         body.dark-mode h3,
-        body.dark-mode h4 {
+        body.dark-mode h4 { /* General h4 in dark mode */
             color: #e0e0e0;
         }
+
+        body.dark-mode #overview-header { /* Specific for overview header in dark mode */
+            color: #e0e0e0; /* Or #ccc if preferred */
+            border-bottom: 1px solid #444; 
+        }
+
 
         body.dark-mode #exam-selector {
             background-color: #3a3a3a;
@@ -394,10 +426,6 @@
             color: #ff8787; 
         }
 
-        body.dark-mode #question-overview-container h4 {
-            color: #ccc;
-        }
-
         body.dark-mode .overview-item {
             background-color: #3a3a3a;
             color: #d0d0d0;
@@ -428,34 +456,31 @@
 
         body.dark-mode .overview-item.marked {
             border: 2px solid #cca700; 
+            padding: 1px; /* Consistent with light mode for marked */
             box-shadow: 0 0 5px rgba(204, 167, 0, 0.4);
         }
-         body.dark-mode .overview-item.marked.current {
-             /* Style for marked and current in dark mode, if different from just marked */
-        }
-
+        
         body.dark-mode .overview-item.marked.answered {
             background-color: #4d431a; 
-            border-color: #72600d;
             color: #f0e68c;
+            border: 2px solid #cca700; /* Ensure marked border takes precedence */
         }
          body.dark-mode .overview-item.marked.answered.current {
             background-color: #b38f00; 
             color: #1e1e1e;
-            border-color: #997a00;
+            border: 2px solid #997a00;
         }
 
         body.dark-mode #mark-question-btn {
-            background-color: #5a5a5a; /* General dark button already covers this unless more specific */
+            background-color: #5a5a5a; 
             color: #e0e0e0;
-            /* border: 1px solid #666; */ /* General dark button style may apply */
         }
         body.dark-mode #mark-question-btn:hover {
             background-color: #6a6a6a;
         }
         body.dark-mode #mark-question-btn.marked-active {
             background-color: #b38f00; 
-            color: #1e1e1e; /* Dark text on light yellow */
+            color: #1e1e1e; 
             border: 1px solid #997a00;
         }
          body.dark-mode #mark-question-btn.marked-active:hover {
@@ -490,9 +515,12 @@
             </div>
             <p id="progress-text"></p>
             <div id="question-overview-container" style="margin-top: 20px; display:none;">
-                <h4>題目總覽 (點擊跳轉):</h4>
-                <div id="overview-panel" style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px;">
-                    </div>
+                 <h4 id="overview-header">
+                    <span id="overview-toggle-icon">▼</span>題目總覽 (點擊跳轉):
+                </h4>
+                <div id="overview-panel" style="gap: 5px; margin-top: 10px;">
+                    {/* Question numbers will be populated here by JS */}
+                </div>
             </div>
         </div>
 
@@ -513,12 +541,9 @@
             processedQuizData.exams = Object.keys(rawQuizData).map(examKey => {
                 const originalExam = rawQuizData[examKey];
                 const examNumber = originalExam.exam_number || parseInt(examKey);
-
                 if (!originalExam.questions || !Array.isArray(originalExam.questions)) {
-                    console.error(`Exam "${examKey}" has no questions or questions are not an array.`);
                     return null;
                 }
-
                 return {
                     exam_id: examKey,
                     title: `第 ${examNumber} 屆金融科技力知識檢定測驗`,
@@ -529,9 +554,7 @@
                         if (questionNumber >= 41 && questionNumber <= 60) {
                             points = 2.0;
                         }
-
                         if (!q.options || typeof q.options !== 'object') {
-                             console.error(`Question ${questionNumber} in exam "${examKey}" has invalid options.`);
                              return {
                                 id: questionNumber,
                                 text: q.question_text || "題目文字遺失",
@@ -540,9 +563,8 @@
                                 points: points
                              };
                         }
-
                         return {
-                            id: questionNumber, // This is the original question number from data, used for display
+                            id: questionNumber, 
                             text: q.question_text || "題目文字遺失",
                             options: Object.keys(q.options).map(optKey => ({
                                 option_id: parseInt(optKey),
@@ -558,9 +580,9 @@
         }
 
         let currentExamData = null;
-        let currentQuestionIndex = 0; // This is the 0-based index for the shuffled questions array
+        let currentQuestionIndex = 0; 
         let userAnswers = [];
-        let markedQuestions = []; // To store boolean for marked state of each question (by array index)
+        let markedQuestions = []; 
         let totalScore = 0;
         let timerInterval;
         let timeLeftInSeconds;
@@ -583,8 +605,11 @@
         const restartQuizBtn = document.getElementById('restart-quiz-btn');
         const darkModeToggleBtn = document.getElementById('dark-mode-toggle');
         const timerDisplayEl = document.getElementById('timer-display');
+        
         const questionOverviewContainerEl = document.getElementById('question-overview-container');
         const overviewPanelEl = document.getElementById('overview-panel');
+        const overviewHeaderEl = document.getElementById('overview-header');
+        const overviewToggleIconEl = document.getElementById('overview-toggle-icon');
 
 
         function showError(message) {
@@ -617,34 +642,30 @@
             if (processedQuizData.exams.length === 0) {
                 const rawExamCount = rawQuizData ? Object.keys(rawQuizData).length : 0;
                 if (rawExamCount > 0) {
-                    throw new Error('所有原始測驗資料轉換後均無效或沒有題目。請檢查 quiz_data.json 的內容與結構。');
+                    throw new Error('所有原始測驗資料轉換後均無效或沒有題目。');
                 } else {
                     throw new Error('沒有可用的測驗');
                 }
             }
-            processedQuizData.exams.forEach((exam, examIndex) => {
-                if (!exam.title || typeof exam.title !== 'string') {
-                    throw new Error(`測驗索引 ${examIndex} 缺少有效的標題`);
-                }
+            processedQuizData.exams.forEach((exam) => {
                 if (!exam.questions || !Array.isArray(exam.questions) || exam.questions.length === 0) {
                      throw new Error(`測驗 "${exam.title}" 沒有題目或題目列表無效`);
                 }
-                exam.questions.forEach((question, questionIndex) => {
+                exam.questions.forEach((question, qIndex) => {
                     if (typeof question.id === 'undefined' || typeof question.text !== 'string') {
-                        throw new Error(`測驗 "${exam.title}" 第 ${questionIndex + 1} 題缺少必要資訊 (ID or text)`);
+                        throw new Error(`測驗 "${exam.title}" 第 ${qIndex + 1} 題缺少必要資訊`);
                     }
                     if (!question.options || !Array.isArray(question.options) || question.options.length === 0) {
-                        throw new Error(`測驗 "${exam.title}" 第 ${questionIndex + 1} 題缺少選項`);
+                        throw new Error(`測驗 "${exam.title}" 第 ${qIndex + 1} 題缺少選項`);
                     }
                     if (typeof question.points !== 'number' || question.points <= 0) {
-                        throw new Error(`測驗 "${exam.title}" 第 ${questionIndex + 1} 題分數無效 (得到: ${question.points})`);
+                        throw new Error(`測驗 "${exam.title}" 第 ${qIndex + 1} 題分數無效`);
                     }
                     if (typeof question.answer !== 'number') {
-                        throw new Error(`測驗 "${exam.title}" 第 ${questionIndex + 1} 題缺少正確答案(或非數字格式)`);
+                        throw new Error(`測驗 "${exam.title}" 第 ${qIndex + 1} 題缺少正確答案`);
                     }
-                    const answerExists = question.options.some(opt => opt.option_id === question.answer);
-                    if (!answerExists) {
-                        throw new Error(`測驗 "${exam.title}" 第 ${questionIndex + 1} 題的正確答案 (${question.answer}) 不在選項中`);
+                    if (!question.options.some(opt => opt.option_id === question.answer)) {
+                        throw new Error(`測驗 "${exam.title}" 第 ${qIndex + 1} 題的正確答案 (${question.answer}) 不在選項中`);
                     }
                 });
             });
@@ -682,14 +703,10 @@
             const minutes = Math.floor((timeLeftInSeconds % 3600) / 60);
             const seconds = timeLeftInSeconds % 60;
             let displayText = "";
-            if (hours > 0) {
-                displayText += `${String(hours).padStart(2, '0')}:`;
-            }
+            if (hours > 0) displayText += `${String(hours).padStart(2, '0')}:`;
             displayText += `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
             timerDisplayEl.textContent = `剩餘時間：${displayText}`;
-            if (timeLeftInSeconds <= 0) {
-                 timerDisplayEl.textContent = "時間到！";
-            }
+            if (timeLeftInSeconds <= 0) timerDisplayEl.textContent = "時間到！";
         }
 
         function startQuiz() {
@@ -707,14 +724,17 @@
                 currentExamData = selectedExamObject;
                 currentQuestionIndex = 0;
                 userAnswers = new Array(currentExamData.questions.length).fill(null);
-                markedQuestions = new Array(currentExamData.questions.length).fill(false); // Initialize
+                markedQuestions = new Array(currentExamData.questions.length).fill(false); 
                 totalScore = 0;
 
                 quizTitleEl.textContent = currentExamData.title;
                 examSelectionDiv.style.display = 'none';
                 resultsAreaDiv.style.display = 'none';
                 questionAreaDiv.style.display = 'block';
-                questionOverviewContainerEl.style.display = 'block'; // Show overview
+                
+                questionOverviewContainerEl.style.display = 'block'; 
+                overviewPanelEl.style.display = 'grid'; // Default to expanded and grid
+                if (overviewToggleIconEl) overviewToggleIconEl.textContent = '▼';
                 
                 timeLeftInSeconds = 90 * 60; 
                 updateTimerDisplay(); 
@@ -731,7 +751,7 @@
                     }
                 }, 1000);
 
-                renderQuestionOverview(); // Initial render for overview
+                renderQuestionOverview(); 
                 displayQuestion();
             } catch (error) {
                 showError(`開始測驗時發生錯誤：${error.message}`);
@@ -742,21 +762,15 @@
             if (!currentExamData || !overviewPanelEl) return;
             overviewPanelEl.innerHTML = ''; 
 
-            currentExamData.questions.forEach((question, index) => { // index is the 0-based shuffled index
-                const overviewItem = document.createElement('button'); // Using button for better accessibility
+            currentExamData.questions.forEach((question, index) => { 
+                const overviewItem = document.createElement('button'); 
                 overviewItem.classList.add('overview-item');
-                overviewItem.textContent = question.id; // Display original question number (e.g., 1, 2, ..., 60)
-                overviewItem.dataset.questionArrayIndex = index; // Store array index for navigation
+                overviewItem.textContent = question.id; 
+                overviewItem.dataset.questionArrayIndex = index; 
 
-                if (index === currentQuestionIndex) {
-                    overviewItem.classList.add('current');
-                }
-                if (userAnswers[index] !== null) {
-                    overviewItem.classList.add('answered');
-                }
-                if (markedQuestions[index]) {
-                    overviewItem.classList.add('marked');
-                }
+                if (index === currentQuestionIndex) overviewItem.classList.add('current');
+                if (userAnswers[index] !== null) overviewItem.classList.add('answered');
+                if (markedQuestions[index]) overviewItem.classList.add('marked');
 
                 overviewItem.addEventListener('click', () => jumpToQuestion(index));
                 overviewPanelEl.appendChild(overviewItem);
@@ -779,12 +793,9 @@
             if (currentExamData && currentQuestionIndex >= 0 && currentQuestionIndex < currentExamData.questions.length) {
                 markedQuestions[currentQuestionIndex] = !markedQuestions[currentQuestionIndex];
                 markQuestionBtn.textContent = markedQuestions[currentQuestionIndex] ? "取消標記" : "標記此題";
-                if (markedQuestions[currentQuestionIndex]) {
-                    markQuestionBtn.classList.add('marked-active');
-                } else {
-                    markQuestionBtn.classList.remove('marked-active');
-                }
-                renderQuestionOverview(); // Update overview to reflect marked state
+                if (markedQuestions[currentQuestionIndex]) markQuestionBtn.classList.add('marked-active');
+                else markQuestionBtn.classList.remove('marked-active');
+                renderQuestionOverview(); 
             }
         }
 
@@ -796,7 +807,7 @@
                     return;
                 }
 
-                const question = currentExamData.questions[currentQuestionIndex]; // question is from shuffled list
+                const question = currentExamData.questions[currentQuestionIndex]; 
                 questionTextEl.textContent = `${question.id}. ${question.text} (${question.points.toFixed(1)}分)`;
                 optionsContainerEl.innerHTML = '';
                 feedbackEl.style.display = 'none';
@@ -808,7 +819,7 @@
                     radio.type = 'radio';
                     radio.name = 'question_option';
                     radio.value = opt.option_id;
-                    radio.id = `q${currentQuestionIndex}_opt${opt.option_id}`; // ID uses array index
+                    radio.id = `q${currentQuestionIndex}_opt${opt.option_id}`; 
                     const label = document.createElement('label');
                     label.htmlFor = radio.id;
                     label.textContent = `(${opt.option_id}) ${opt.text}`;
@@ -826,12 +837,9 @@
                     optionsContainerEl.appendChild(div);
                 });
                 
-                // Restore selection if answer exists
                 document.querySelectorAll('.option.selected').forEach(el => el.classList.remove('selected'));
                 const currentlyCheckedRadioInitial = optionsContainerEl.querySelector('input[name="question_option"]:checked');
-                 if (currentlyCheckedRadioInitial) {
-                    currentlyCheckedRadioInitial.checked = false; 
-                }
+                 if (currentlyCheckedRadioInitial) currentlyCheckedRadioInitial.checked = false; 
                 if (userAnswers[currentQuestionIndex] !== null) {
                     const previousAnswerRadio = optionsContainerEl.querySelector(`input[value="${userAnswers[currentQuestionIndex]}"]`);
                     if (previousAnswerRadio) {
@@ -841,19 +849,15 @@
                     }
                 }
 
-                // Update mark button state
                 markQuestionBtn.textContent = markedQuestions[currentQuestionIndex] ? "取消標記" : "標記此題";
-                 if (markedQuestions[currentQuestionIndex]) {
-                    markQuestionBtn.classList.add('marked-active');
-                } else {
-                    markQuestionBtn.classList.remove('marked-active');
-                }
+                 if (markedQuestions[currentQuestionIndex]) markQuestionBtn.classList.add('marked-active');
+                else markQuestionBtn.classList.remove('marked-active');
 
                 progressTextEl.textContent = `第 ${currentQuestionIndex + 1} / ${currentExamData.questions.length} 題 (題庫題號: ${question.id})`;
                 nextQuestionBtn.textContent = (currentQuestionIndex === currentExamData.questions.length - 1) ? "提交測驗" : "下一題";
                 prevQuestionBtn.disabled = currentQuestionIndex === 0;
 
-                renderQuestionOverview(); // Update overview for current/answered/marked states
+                renderQuestionOverview(); 
             } catch (error) {
                 showError(`顯示題目時發生錯誤：${error.message}`);
             }
@@ -867,16 +871,11 @@
                     feedbackEl.style.display = 'block';
                     return;
                 }
-                 if (selectedOption) { 
-                    userAnswers[currentQuestionIndex] = parseInt(selectedOption.value);
-                }
+                 if (selectedOption) userAnswers[currentQuestionIndex] = parseInt(selectedOption.value);
                 feedbackEl.style.display = 'none';
                 currentQuestionIndex++;
-                if (currentQuestionIndex < currentExamData.questions.length) {
-                    displayQuestion();
-                } else {
-                    showResults();
-                }
+                if (currentQuestionIndex < currentExamData.questions.length) displayQuestion();
+                else showResults();
             } catch (error) {
                 showError(`處理答案時發生錯誤：${error.message}`);
             }
@@ -886,9 +885,7 @@
             try {
                 if (currentQuestionIndex > 0) {
                     const selectedOption = optionsContainerEl.querySelector('input[name="question_option"]:checked');
-                    if (selectedOption) {
-                         userAnswers[currentQuestionIndex] = parseInt(selectedOption.value);
-                    }
+                    if (selectedOption) userAnswers[currentQuestionIndex] = parseInt(selectedOption.value);
                     currentQuestionIndex--;
                     displayQuestion();
                 }
@@ -898,21 +895,19 @@
         }
 
         function showResults() {
-            if (resultsAreaDiv.style.display === 'block') {
-                return;
-            }
+            if (resultsAreaDiv.style.display === 'block') return;
             try {
                 clearInterval(timerInterval); 
                 questionAreaDiv.style.display = 'none';
-                questionOverviewContainerEl.style.display = 'none'; // Hide overview
+                questionOverviewContainerEl.style.display = 'none'; 
                 resultsAreaDiv.style.display = 'block';
                 reviewAreaEl.innerHTML = '';
                 totalScore = 0;
                 let maxScore = 0;
 
-                currentExamData.questions.forEach((question, index) => { // Iterate through shuffled questions
+                currentExamData.questions.forEach((question, index) => { 
                     maxScore += question.points;
-                    const userAnswerId = userAnswers[index]; // Use array index
+                    const userAnswerId = userAnswers[index]; 
                     const correctAnswerId = question.answer;
                     const isCorrect = userAnswerId === correctAnswerId;
                     const pointsEarned = isCorrect ? question.points : 0;
@@ -922,7 +917,7 @@
                     reviewItem.classList.add('review-item');
                     const questionTextElement = document.createElement('p');
                     questionTextElement.classList.add('review-question');
-                    questionTextElement.textContent = `${question.id}. ${question.text} (${question.points.toFixed(1)}分)`; // Show original id
+                    questionTextElement.textContent = `${question.id}. ${question.text} (${question.points.toFixed(1)}分)`; 
                     reviewItem.appendChild(questionTextElement);
 
                     const userAnswerObj = question.options.find(opt => opt.option_id === userAnswerId);
@@ -958,14 +953,14 @@
                 if(timerDisplayEl) timerDisplayEl.textContent = ''; 
                 resultsAreaDiv.style.display = 'none';
                 questionAreaDiv.style.display = 'none';
-                questionOverviewContainerEl.style.display = 'none'; // Hide overview
-                overviewPanelEl.innerHTML = ''; // Clear overview items
+                questionOverviewContainerEl.style.display = 'none'; 
+                overviewPanelEl.innerHTML = ''; 
                 examSelectionDiv.style.display = 'block';
                 examSelector.value = "";
                 currentExamData = null;
                 currentQuestionIndex = 0;
                 userAnswers = [];
-                markedQuestions = []; // Reset marked questions
+                markedQuestions = []; 
                 totalScore = 0;
             } catch (error) {
                 showError(`重置測驗時發生錯誤：${error.message}`);
@@ -984,6 +979,17 @@
                     document.body.classList.add('dark-mode');
                 }
                 populateExamSelector();
+
+                if (overviewHeaderEl) { 
+                    overviewHeaderEl.addEventListener('click', () => {
+                        const isPanelHidden = overviewPanelEl.style.display === 'none';
+                        overviewPanelEl.style.display = isPanelHidden ? 'grid' : 'none'; 
+                        if (overviewToggleIconEl) {
+                            overviewToggleIconEl.textContent = isPanelHidden ? '▼' : '►';
+                        }
+                    });
+                }
+
             } catch (error) {
                 showError(`初始化應用程式時發生錯誤：${error.message}`);
             }
@@ -992,7 +998,7 @@
         startQuizBtn.addEventListener('click', startQuiz);
         nextQuestionBtn.addEventListener('click', processNextQuestion);
         prevQuestionBtn.addEventListener('click', processPrevQuestion);
-        markQuestionBtn.addEventListener('click', toggleMarkQuestion); // Listener for mark button
+        markQuestionBtn.addEventListener('click', toggleMarkQuestion); 
         restartQuizBtn.addEventListener('click', restartQuiz);
         darkModeToggleBtn.addEventListener('click', toggleDarkMode);
 
@@ -1019,7 +1025,7 @@
                     event.preventDefault();
                     processNextQuestion();
                 }
-                 else if (event.key.toLowerCase() === 'm') { // M key to mark/unmark
+                 else if (event.key.toLowerCase() === 'm') { 
                     event.preventDefault();
                     toggleMarkQuestion();
                 }
